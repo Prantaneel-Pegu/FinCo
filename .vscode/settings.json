@@ -1,0 +1,16 @@
+{
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "tailwindCSS.includeLanguages": {
+        "html": "html",
+        "javascript": "javascript",
+        "css": "css"
+    },
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "css.lint.unknownAtRules": "ignore",
+    "workbench.settings.openDefaultSettings": false
+}

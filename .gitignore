@@ -6,6 +6,13 @@
 .pnp.js
 .yarn/install-state.gz
 
+# design
+design.txt
+design-suggestions.txt
+
+# local utils
+github-upload.py
+
 # testing
 /coverage
 
