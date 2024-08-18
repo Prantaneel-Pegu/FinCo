@@ -10,6 +10,9 @@
 design.txt
 design-suggestions.txt
 
+# db
+migrations
+
 # local utils
 github-upload.py
 
@@ -41,3 +44,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
