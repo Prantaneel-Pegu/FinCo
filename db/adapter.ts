@@ -7,7 +7,6 @@ import { sessions, users } from "./schema";
 export const db = drizzle(sql);
 
 const userTable = users;
-
 const sessionsTable = sessions;
 
 export const adapter = new DrizzlePostgreSQLAdapter(

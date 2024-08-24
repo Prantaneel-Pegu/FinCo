@@ -14,6 +14,7 @@ import { Label } from "@/app/ui/shadcn-components/ui/label";
 import { useState } from "react";
 import { signUp } from "@/app/lib/auth/actions";
 import { reloadClientPage } from "@/app/lib/utils";
+import { googleAuth } from "@/app/lib/auth/oauth";
 
 export default function SignUpForm() {
     const [isPending, setIsPending] = useState(false);
@@ -24,6 +25,12 @@ export default function SignUpForm() {
         setIsPending(false);
         reloadClientPage();
     }
+
+    async function handleGoogleSignUp() {
+        await googleAuth();
+    }
+
+    async function handleGithubSignUp() {}
 
     return (
         <form action={handleSignUp}>
@@ -88,17 +95,21 @@ export default function SignUpForm() {
                         <Button
                             variant="outline"
                             className="w-full disabled:bg-gray-700"
+                            type="button"
                             disabled={isPending}
                         >
-                            Sign up with Google
+                            Continue with Google
                         </Button>
-                        <Button
-                            variant="outline"
-                            className="w-full disabled:bg-gray-700"
-                            disabled={isPending}
-                        >
-                            Sign up with GitHub
-                        </Button>
+                        <Link href={"/signin/github"}>
+                            <Button
+                                variant="outline"
+                                className="w-full disabled:bg-gray-700"
+                                type="button"
+                                disabled={isPending}
+                            >
+                                Continue with GitHub
+                            </Button>
+                        </Link>
                     </div>
                     <div className="mt-4 text-center text-sm">
                         Already have an account?{" "}

@@ -58,16 +58,18 @@ export default function Home() {
                 <p>{testData}</p>
             </section>
 
-            <section className="mb-16">
-                <button className="mx-auto block rounded-full border-2 border-black bg-lime-400 px-6 py-3 text-xl">
+            {/* <section className="mb-16">
+                <button className="mx-auto block rounded-full border-2 bg-black px-6 py-3 text-xl text-white hover:bg-gray-800">
                     Log In
                 </button>
-            </section>
+            </section> */}
 
-            <section className="mb-32 flex flex-col gap-16">
+            <section className="mx-auto mb-20 flex max-w-[75%] gap-20 pl-48">
                 <SignUpForm />
-                <SignOutButton />
                 <SignInForm />
+            </section>
+            <section className="mb-32">
+                <SignOutButton />
             </section>
         </main>
     );

@@ -4,9 +4,10 @@ export const fincoSchema = pgSchema("finco");
 
 export const users = fincoSchema.table("users", {
     id: varchar("id", { length: 256 }).primaryKey().notNull().unique(),
-    userName: varchar("user_name", { length: 256 }).notNull().unique(),
-    email: varchar("email", { length: 256 }).notNull().unique(),
-    passwordHash: varchar("password_hash", { length: 4096 }).notNull(),
+    userName: varchar("user_name", { length: 256 }).unique(),
+    email: varchar("email", { length: 256 }).unique(),
+    passwordHash: varchar("password_hash", { length: 4096 }),
+    githubId: varchar("github_id", { length: 256 }).unique(),
 });
 
 export const sessions = fincoSchema.table("sessions", {
