@@ -24,10 +24,13 @@
         "format": "prettier . --write"
     },
     "dependencies": {
+        "@lucia-auth/adapter-drizzle": "^1.1.0",
         "@next/env": "^14.2.5",
         "@radix-ui/react-label": "^2.1.0",
         "@radix-ui/react-slot": "^1.1.0",
         "@vercel/postgres": "^0.9.0",
+        "arctic": "^1.9.2",
+        "argon2": "^0.40.3",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "dotenv": "^16.4.5",

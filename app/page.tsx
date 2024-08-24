@@ -1,24 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createUser, getUserData } from "../db/db-actions";
+import { getAllUsersData } from "../db/db-actions";
 import { UserSelect } from "@/db/schema";
-import SignUp from "./signup/page";
+import { validateRequest } from "./lib/auth/validate-request";
+import SignOutButton from "./ui/auth/signout-button";
+import SignInForm from "./ui/auth/signin-form";
+import SignUpForm from "./ui/auth/signup-form";
 
 export default function Home() {
     const [userData, setUserData] = useState<UserSelect[]>();
+    const [testData, setTestData] = useState("");
 
     useEffect(() => {
-        getUserData().then((data) => {
+        console.log("IN USEEFFECT");
+
+        getAllUsersData().then((data) => {
             if (data[0]?.id) {
                 setUserData(data);
-            } else {
-                createUser({
-                    username: Math.random().toString(),
-                    passwordHash: Math.random().toString(),
-                });
-                getUserData().then((data) => setUserData(data));
             }
+        });
+        validateRequest().then((user) => {
+            if (!user) {
+                setTestData("NOT LOGGED IN");
+            } else {
+                setTestData(
+                    `LOGGED IN AS: ${user.user?.userName} ${user.session?.userId} ${user.session?.id}`,
+                );
+            }
+            console.log("USER: ", user);
         });
     }, []);
 
@@ -35,7 +45,7 @@ export default function Home() {
                         ? userData.map((user) => {
                               return (
                                   <p key={user.id} className="">
-                                      {user.username}: {user.passwordHash}
+                                      {user.userName}: {user.passwordHash}
                                   </p>
                               );
                           })
@@ -43,8 +53,21 @@ export default function Home() {
                 </div>
             </section>
 
-            <section>
-                <SignUp />
+            <section className="mb-24 text-center">
+                <h2 className="mb-16 mt-16 text-3xl">Logged In Test</h2>
+                <p>{testData}</p>
+            </section>
+
+            <section className="mb-16">
+                <button className="mx-auto block rounded-full border-2 border-black bg-lime-400 px-6 py-3 text-xl">
+                    Log In
+                </button>
+            </section>
+
+            <section className="mb-32 flex flex-col gap-16">
+                <SignUpForm />
+                <SignOutButton />
+                <SignInForm />
             </section>
         </main>
     );
