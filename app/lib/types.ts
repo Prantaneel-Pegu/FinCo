@@ -4,3 +4,10 @@ export type UserData = {
     avatarLink: string;
     balance: string;
 };
+
+export const userDataSkeleton: UserData = {
+    name: "",
+    userName: "",
+    avatarLink: "",
+    balance: "",
+};
