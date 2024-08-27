@@ -93,7 +93,11 @@ export async function login(formData: FormData) {
     const existingUser = await getUserData(userEmail);
     console.log(existingUser);
 
-    if (!existingUser) {
+    if (
+        !existingUser?.id ||
+        !existingUser.email ||
+        !existingUser.passwordHash
+    ) {
         return {
             error: "Incorrect email or password",
         };

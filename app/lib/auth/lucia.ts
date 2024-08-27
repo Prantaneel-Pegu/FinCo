@@ -4,11 +4,12 @@ import { Lucia, TimeSpan } from "lucia";
 
 export const lucia = new Lucia(adapter, {
     sessionCookie: {
-        expires: false,
+        expires: true,
         attributes: {
             secure: process.env.NODE_ENV === "production",
         },
     },
+    sessionExpiresIn: new TimeSpan(1, "h"),
     getUserAttributes: (attributes) => {
         // attributes has the type of DatabaseUserAttributes
         return attributes;

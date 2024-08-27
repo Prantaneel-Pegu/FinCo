@@ -14,16 +14,15 @@ import { Input } from "../shadcn-components/ui/input";
 import { useState } from "react";
 import { login } from "@/app/lib/auth/actions";
 import { reloadClientPage } from "@/app/lib/utils";
+import { GoogleIcon, GithubIcon } from "../components/icons";
 
 export default function SignInForm() {
     const [isPending, setIsPending] = useState(false);
-    const [error, setError] = useState("");
 
     async function handleSignIn(formData: FormData) {
         setIsPending(true);
-        const result = await login(formData);
-        console.log(result);
-        setError(result?.error ? result.error : "No Errors");
+        console.log(await login(formData));
+        setIsPending(false);
         reloadClientPage();
     }
 
@@ -70,12 +69,28 @@ export default function SignInForm() {
                         <Button type="submit" className="w-full">
                             Login
                         </Button>
-                        <Button variant="outline" className="w-full">
-                            Login with Google
-                        </Button>
-                        <Button variant="outline" className="w-full">
-                            Login with Github
-                        </Button>
+                        <Link href={"/signin/google"}>
+                            <Button
+                                variant="outline"
+                                className="bg-cta relative w-full disabled:bg-gray-700"
+                                type="button"
+                                disabled={isPending}
+                            >
+                                <GoogleIcon className="absolute left-3 top-1/2 size-6 -translate-y-1/2" />
+                                Login with Google
+                            </Button>
+                        </Link>
+                        <Link href={"/signin/github"}>
+                            <Button
+                                variant="outline"
+                                className="bg-cta relative w-full disabled:bg-gray-700"
+                                type="button"
+                                disabled={isPending}
+                            >
+                                <GithubIcon className="absolute left-1 top-1/2 !size-10 -translate-y-1/2" />
+                                Login with GitHub
+                            </Button>
+                        </Link>
                     </div>
                     <div className="mt-4 text-center text-sm">
                         Don&apos;t have an account?{" "}
@@ -85,12 +100,6 @@ export default function SignInForm() {
                     </div>
                 </CardContent>
             </Card>
-            {
-                <p className="mt-8 text-center text-xl">
-                    {isPending ? "Pending..." : "Not Pending"} <br />{" "}
-                    {error ? error : "No errors"}
-                </p>
-            }
         </form>
     );
 }

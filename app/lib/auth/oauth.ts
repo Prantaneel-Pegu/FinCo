@@ -1,14 +1,16 @@
 "use server";
 
 import { generateCodeVerifier, generateState } from "arctic";
-import { redirect } from "next/navigation";
 import { github, google } from "./oauth-providers";
 
 export async function googleAuth() {
     const state = generateState();
     const codeVerifier = generateCodeVerifier();
-    const url = await google.createAuthorizationURL(state, codeVerifier);
-    return redirect(url.href);
+    const url = await google.createAuthorizationURL(state, codeVerifier, {
+        scopes: ["email"],
+    });
+
+    return { state, codeVerifier, url };
 }
 
 export async function githubAuth() {

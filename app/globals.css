@@ -1,4 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-  
+
+/* Function classes */
+
+.nav-panel-hidden {
+    left: -100%;
+}

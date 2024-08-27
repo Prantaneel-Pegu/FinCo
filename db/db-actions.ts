@@ -15,6 +15,7 @@ export async function createUser({
 
         await db.insert(users).values({
             id: id,
+            name: userName,
             userName: userName,
             email: email,
             passwordHash: passwordHash,
@@ -47,20 +48,6 @@ export async function getAllUsersData() {
     return result;
 }
 
-export async function setUserGithub(
-    id: string,
-    githubId: string,
-    githubUsername: string,
-) {
-    const result = await db.insert(users).values({
-        id: id,
-        githubId: githubId,
-        userName: githubUsername,
-    });
-
-    return result;
-}
-
 export async function getUserGithub(githubId: string) {
     const [userGithub] = await db
         .select()
@@ -71,4 +58,70 @@ export async function getUserGithub(githubId: string) {
     if (userGithub?.id) {
         return userGithub;
     } else return null;
+}
+
+export async function setUserGithub(
+    id: string,
+    githubId: string,
+    githubUsername: string,
+) {
+    const result = await db.insert(users).values({
+        id: id,
+        githubId: githubId,
+        name: githubUsername,
+        userName: githubUsername,
+    });
+
+    return result;
+}
+
+export async function getUserGoogle(googleid: string) {
+    const [userGoogle] = await db
+        .select()
+        .from(users)
+        .where(eq(users.googleId, googleid))
+        .limit(1);
+
+    if (userGoogle?.id) {
+        return userGoogle;
+    } else return null;
+}
+
+export async function updateUserProfile(
+    userId: string,
+    name: string,
+    userName: string,
+) {
+    try {
+        await db
+            .update(users)
+            .set({
+                name: name,
+                userName: userName,
+            })
+            .where(eq(users.id, userId));
+
+        return "Successfully Setup User Profile";
+    } catch (error) {
+        return `Encountered an Error: ${error}`;
+    }
+}
+
+export async function setUserGoogle(
+    id: string,
+    userName: string,
+    googleId: string,
+    googleEmail: string,
+    googlePfp: string,
+) {
+    const result = await db.insert(users).values({
+        id: id,
+        name: userName,
+        userName: userName,
+        googleId: googleId,
+        email: googleEmail,
+        userPfp: googlePfp,
+    });
+
+    return result;
 }

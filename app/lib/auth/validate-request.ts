@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 import { cache } from "react";
-
 import { type Session, type User } from "lucia";
 import { lucia } from "./lucia";
 
@@ -43,3 +42,4 @@ export const validateRequest = cache(
         return result;
     },
 );
+

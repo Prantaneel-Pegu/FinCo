@@ -1,34 +1,50 @@
 import { cookies } from "next/headers";
-import { OAuth2RequestError } from "arctic";
+import { generateCodeVerifier, OAuth2RequestError } from "arctic";
 import { generateIdFromEntropySize } from "lucia";
-import { github } from "@/app/lib/auth/oauth-providers";
+import { google } from "@/app/lib/auth/oauth-providers";
 import { lucia } from "@/app/lib/auth/lucia";
-import { getUserGithub, setUserGithub } from "@/db/db-actions";
+import { getUserGoogle, setUserGoogle } from "@/db/db-actions";
 import { error } from "console";
 
 export async function GET(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
     const state = url.searchParams.get("state");
-    const storedState = cookies().get("github_oauth_state")?.value ?? null;
-    if (!code || !state || !storedState || state !== storedState) {
+    const storedState = cookies().get("google_oauth_state")?.value ?? null;
+    const storedCodeVerifier = cookies().get("code_verifier")?.value ?? null;
+
+    if (
+        !code ||
+        !storedCodeVerifier ||
+        !state ||
+        !storedState ||
+        state !== storedState
+    ) {
         return new Response(null, {
             status: 400,
         });
     }
 
     try {
-        const tokens = await github.validateAuthorizationCode(code);
-        const githubUserResponse = await fetch("https://api.github.com/user", {
-            headers: {
-                Authorization: `Bearer ${tokens.accessToken}`,
+        const tokens = await google.validateAuthorizationCode(
+            code,
+            storedCodeVerifier,
+        );
+        const googleUserResponse = await fetch(
+            "https://openidconnect.googleapis.com/v1/userinfo",
+            {
+                headers: {
+                    Authorization: `Bearer ${tokens.accessToken}`,
+                },
             },
-        });
-        const githubUser: GitHubUser = await githubUserResponse.json();
+        );
 
-        const existingUser = await getUserGithub(githubUser.id);
+        const googleUser: GoogleUser = await googleUserResponse.json();
+        console.log(googleUser);
 
-        if (existingUser) {
+        const existingUser = await getUserGoogle(googleUser.sub);
+
+        if (existingUser?.id) {
             const session = await lucia.createSession(existingUser.id, {});
             const sessionCookie = lucia.createSessionCookie(session.id);
             cookies().set(
@@ -47,7 +63,13 @@ export async function GET(request: Request): Promise<Response> {
         const userId = generateIdFromEntropySize(10); // 16 characters long
 
         console.log(
-            await setUserGithub(userId, githubUser.id, githubUser.login),
+            await setUserGoogle(
+                userId,
+                "User",
+                googleUser.sub,
+                googleUser.email,
+                googleUser.picture,
+            ),
         );
 
         const session = await lucia.createSession(userId, {});
@@ -60,7 +82,7 @@ export async function GET(request: Request): Promise<Response> {
         return new Response(null, {
             status: 302,
             headers: {
-                Location: "/",
+                Location: `/signup/profile-setup?user_id=${userId}`,
             },
         });
     } catch (e) {
@@ -78,7 +100,8 @@ export async function GET(request: Request): Promise<Response> {
     }
 }
 
-interface GitHubUser {
-    id: string;
-    login: string;
+interface GoogleUser {
+    sub: string;
+    email: string;
+    picture: string;
 }

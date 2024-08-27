@@ -15,6 +15,7 @@ import { useState } from "react";
 import { signUp } from "@/app/lib/auth/actions";
 import { reloadClientPage } from "@/app/lib/utils";
 import { googleAuth } from "@/app/lib/auth/oauth";
+import { GithubIcon, GoogleIcon } from "../components/icons";
 
 export default function SignUpForm() {
     const [isPending, setIsPending] = useState(false);
@@ -25,12 +26,6 @@ export default function SignUpForm() {
         setIsPending(false);
         reloadClientPage();
     }
-
-    async function handleGoogleSignUp() {
-        await googleAuth();
-    }
-
-    async function handleGithubSignUp() {}
 
     return (
         <form action={handleSignUp}>
@@ -92,22 +87,26 @@ export default function SignUpForm() {
                         >
                             Create an account
                         </Button>
-                        <Button
-                            variant="outline"
-                            className="w-full disabled:bg-gray-700"
-                            type="button"
-                            disabled={isPending}
-                        >
-                            Continue with Google
-                        </Button>
-                        <Link href={"/signin/github"}>
+                        <Link href={"/signin/google"}>
                             <Button
                                 variant="outline"
-                                className="w-full disabled:bg-gray-700"
+                                className="bg-cta relative w-full disabled:bg-gray-700"
                                 type="button"
                                 disabled={isPending}
                             >
-                                Continue with GitHub
+                                <GoogleIcon className="absolute left-3 top-1/2 size-6 -translate-y-1/2" />
+                                Sign Up with Google
+                            </Button>
+                        </Link>
+                        <Link href={"/signin/github"}>
+                            <Button
+                                variant="outline"
+                                className="bg-cta relative w-full disabled:bg-gray-700"
+                                type="button"
+                                disabled={isPending}
+                            >
+                                <GithubIcon className="absolute left-1 top-1/2 !size-10 -translate-y-1/2" />
+                                Sign Up with GitHub
                             </Button>
                         </Link>
                     </div>

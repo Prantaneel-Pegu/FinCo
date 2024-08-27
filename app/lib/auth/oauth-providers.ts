@@ -11,12 +11,12 @@ dotenv.config({
 });
 
 export const google = new Google(
-    process.env.OAUTH_CLIENT_ID as string,
-    process.env.OAUTH_CLIENT_SECRET as string,
-    process.env.OAUTH_REDIRECT_URI as string,
+    process.env.GOOGLE_CLIENT_ID as string,
+    process.env.GOOGLE_CLIENT_SECRET as string,
+    process.env.GOOGLE_REDIRECT_URI as string,
 );
 
 export const github = new GitHub(
-      process.env.GITHUB_CLIENT_ID as string,
-      process.env.GITHUB_CLIENT_SECRET as string,
-  );
+    process.env.GITHUB_CLIENT_ID as string,
+    process.env.GITHUB_CLIENT_SECRET as string,
+);
