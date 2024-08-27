@@ -1,4 +1,4 @@
-"use client";
+"use server";
 
 import { Button } from "@/app/ui/shadcn-components/ui/button";
 import {
@@ -14,7 +14,7 @@ import { Label } from "@radix-ui/react-label";
 import { redirect } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-export default function ProfileSetup() {
+export default async function ProfileSetup() {
     const searchParams = useSearchParams();
     const userId = searchParams.get("user_id");
 
