@@ -1,6 +1,8 @@
 TASKS:
     overhaul login pages plus page at 'signup/profile-setup'
 
+    add loader animations, also add at 'signup/profile-setup'
+
     demo user mode add
 
     create privacy policy
