@@ -9,13 +9,27 @@ import {
     CardContent,
 } from "@/app/ui/shadcn-components/ui/card";
 import { Input } from "@/app/ui/shadcn-components/ui/input";
-import { updateUserProfile } from "@/db/db-actions";
 import { Label } from "@radix-ui/react-label";
+import { updateUserProfile } from "@/db/db-actions";
 import { redirect } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
-export default function ProfileSetup() {
+export default function ProfileSetupSuspense() {
+    return (
+        <Suspense
+            fallback={
+                <p className="mt-16 text-center text-4xl font-medium">
+                    Loading...
+                </p>
+            }
+        >
+            <ProfileSetup />
+        </Suspense>
+    );
+}
+
+function ProfileSetup() {
     const searchParams = useSearchParams();
     const userId = searchParams.get("user_id");
 
@@ -34,53 +48,50 @@ export default function ProfileSetup() {
     }
 
     return (
-        <Suspense fallback={<p className="text-center mt-16 text-4xl font-medium">Loading...</p>}>
-            <main>
-                <Card className="mx-auto w-[350px]">
-                    <CardHeader>
-                        <CardTitle>Create your profile</CardTitle>
-                        <CardDescription>
-                            Choose something nice for yourself
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <form
-                            action={handleProfileSetup}
-                            className="flex flex-col gap-4"
-                        >
-                            <div className="grid w-full items-center gap-4">
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label htmlFor="profileSetupName">
-                                        Name
-                                    </Label>
-                                    <Input
-                                        id="profileSetupName"
-                                        name="name"
-                                        placeholder="Marco Brownie"
-                                        required
-                                    />
-                                </div>
+        /* <ProfileSetupClient profileSetupHandler={handleProfileSetup} /> */
+        <main>
+            <Card className="mx-auto w-[350px]">
+                <CardHeader>
+                    <CardTitle>Create your profile</CardTitle>
+                    <CardDescription>
+                        Choose something nice for yourself
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form
+                        action={handleProfileSetup}
+                        className="flex flex-col gap-4"
+                    >
+                        <div className="grid w-full items-center gap-4">
+                            <div className="flex flex-col space-y-1.5">
+                                <Label htmlFor="profileSetupName">Name</Label>
+                                <Input
+                                    id="profileSetupName"
+                                    name="name"
+                                    placeholder="Marco Brownie"
+                                    required
+                                />
                             </div>
-                            <div className="grid w-full items-center gap-4">
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label htmlFor="profileSetupUsername">
-                                        Username
-                                    </Label>
-                                    <Input
-                                        id="profileSetupUsername"
-                                        name="username"
-                                        placeholder="pricklypear213"
-                                        required
-                                    />
-                                </div>
+                        </div>
+                        <div className="grid w-full items-center gap-4">
+                            <div className="flex flex-col space-y-1.5">
+                                <Label htmlFor="profileSetupUsername">
+                                    Username
+                                </Label>
+                                <Input
+                                    id="profileSetupUsername"
+                                    name="username"
+                                    placeholder="pricklypear213"
+                                    required
+                                />
                             </div>
-                            <Button type="submit" className="mt-4">
-                                Create
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
-            </main>
-        </Suspense>
+                        </div>
+                        <Button type="submit" className="mt-4">
+                            Create
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
+        </main>
     );
 }
