@@ -38,7 +38,7 @@ export async function getUserData(userEmail: string) {
         .where(eq(users.email, userEmail))
         .limit(1);
 
-    if (user.id) {
+    if (user?.id) {
         return user;
     } else return null;
 }

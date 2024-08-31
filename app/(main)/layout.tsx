@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import "@/app/globals.css";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import Header from "./ui/header";
+import Header from "../ui/main/header";
+import CurrencyProvider from "../ui/components/currency-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,8 +19,10 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className={`${inter.className} text-textColor antialiased`}>
-                <Header />
-                {children}
+                <CurrencyProvider>
+                    <Header />
+                    {children}
+                </CurrencyProvider>
             </body>
         </html>
     );

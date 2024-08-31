@@ -3,8 +3,13 @@
 import { signOut } from "@/app/lib/auth/actions";
 import { reloadClientPage } from "@/app/lib/utils";
 import { useState } from "react";
+import { Button } from "../shadcn-components/ui/button";
 
-export default function SignOutButton() {
+type Props = {
+    className?: string;
+};
+
+export default function SignOutButton({ className }: Props) {
     const [isPending, setIsPending] = useState(false);
 
     async function handleSignOut() {
@@ -15,13 +20,11 @@ export default function SignOutButton() {
     }
 
     return (
-        <form action={handleSignOut}>
-            <button
-                type="submit"
-                className="mx-auto block rounded-full bg-black px-6 py-3 text-white hover:bg-gray-800 active:bg-slate-800"
-            >
-                Sign out
-            </button>
-        </form>
+        <Button
+            onClick={handleSignOut}
+            className={`bg-accent ${className} w-full`}
+        >
+            Sign out
+        </Button>
     );
 }

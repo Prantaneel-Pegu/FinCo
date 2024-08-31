@@ -13,9 +13,9 @@ import { Input } from "@/app/ui/shadcn-components/ui/input";
 import { Label } from "@/app/ui/shadcn-components/ui/label";
 import { useState } from "react";
 import { signUp } from "@/app/lib/auth/actions";
-import { reloadClientPage } from "@/app/lib/utils";
-import { googleAuth } from "@/app/lib/auth/oauth";
+
 import { GithubIcon, GoogleIcon } from "../components/icons";
+import { redirect } from "next/navigation";
 
 export default function SignUpForm() {
     const [isPending, setIsPending] = useState(false);
@@ -24,7 +24,7 @@ export default function SignUpForm() {
         setIsPending(true);
         console.log(await signUp(formData));
         setIsPending(false);
-        reloadClientPage();
+        redirect("/");
     }
 
     return (

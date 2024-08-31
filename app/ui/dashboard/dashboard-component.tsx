@@ -8,6 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "../shadcn-components/ui/card";
+import CurrencySelector from "../components/currency-selector";
 
 export default function DashboardComponent({
     userData,
@@ -25,21 +26,25 @@ export default function DashboardComponent({
 
             <div className="flex flex-col gap-8">
                 <section>
+                    <CurrencySelector />
+                </section>
+
+                <section>
                     <Card className="rounded-3xl border-2 border-gray-300 shadow-lg">
                         <CardHeader>
-                            <CardTitle>Total Balance</CardTitle>{" "}
+                            <CardTitle>Bank Balance</CardTitle>{" "}
                         </CardHeader>
                         <CardContent>
                             <p className="text-2xl font-semibold">
-                                {userData.balance.split(".")[0]}
+                                {userData.cashAmount.split(".")[0]}
                                 <span className="text-gray-400">
                                     {"."}
-                                    {userData.balance.split(".")[1]}
+                                    {userData.cashAmount.split(".")[1]}
                                 </span>
                             </p>
                         </CardContent>
                         <CardFooter>
-                            <div className="bg-success-light mr-2 rounded-2xl px-2 py-1">
+                            <div className="mr-2 rounded-2xl bg-success-light px-2 py-1">
                                 <p className="text-sm">
                                     <span className="text-success-dark">+</span>{" "}
                                     12.1%
@@ -62,34 +67,37 @@ export default function DashboardComponent({
                                 <ul className="flex flex-col gap-4 text-lg">
                                     <li>
                                         <span className="font-medium">
-                                            Cash: $8000
-                                        </span>{" "}
+                                            Cash:{" "}
+                                            {userData.cashAmount.split(".")[0]}
+                                        </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Stocks: $37650
-                                        </span>{" "}
+                                            Stocks: {userData.stocksValue}
+                                        </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Bonds: $200
-                                        </span>{" "}
+                                            Bonds: {userData.bondsValue}
+                                        </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Properties: Not Given
-                                        </span>{" "}
+                                            Properties:{" "}
+                                            {userData.propertiesValue}
+                                        </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Others: $0
-                                        </span>{" "}
+                                            Other Assets:{" "}
+                                            {userData.otherAssetsValue}
+                                        </span>
                                     </li>
                                 </ul>
                             </section>
                         </CardContent>
                         <CardFooter>
-                            <div className="bg-success-light mr-3 text-nowrap rounded-2xl px-2 py-1">
+                            <div className="mr-3 text-nowrap rounded-2xl bg-success-light px-2 py-1">
                                 <p className="text-sm">
                                     <span className="text-success-dark">-</span>{" "}
                                     8.5%

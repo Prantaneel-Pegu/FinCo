@@ -13,8 +13,9 @@ import {
 import { Input } from "../shadcn-components/ui/input";
 import { useState } from "react";
 import { login } from "@/app/lib/auth/actions";
-import { reloadClientPage } from "@/app/lib/utils";
+
 import { GoogleIcon, GithubIcon } from "../components/icons";
+import { redirect } from "next/navigation";
 
 export default function SignInForm() {
     const [isPending, setIsPending] = useState(false);
@@ -23,7 +24,7 @@ export default function SignInForm() {
         setIsPending(true);
         console.log(await login(formData));
         setIsPending(false);
-        reloadClientPage();
+        redirect("/");
     }
 
     return (
