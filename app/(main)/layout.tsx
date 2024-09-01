@@ -2,7 +2,8 @@ import "@/app/globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "../ui/main/header";
-import CurrencyProvider from "../ui/components/currency-provider";
+import CurrencyProvider from "../ui/main/currency-provider";
+import UserDataProvider from "../ui/main/user-data-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,10 +20,12 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth">
             <body className={`${inter.className} text-textColor antialiased`}>
-                <CurrencyProvider>
-                    <Header />
-                    {children}
-                </CurrencyProvider>
+                <UserDataProvider>
+                    <CurrencyProvider>
+                        <Header />
+                        {children}
+                    </CurrencyProvider>
+                </UserDataProvider>
             </body>
         </html>
     );

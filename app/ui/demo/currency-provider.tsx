@@ -6,19 +6,19 @@ import {
 } from "@/app/lib/exchange-rate-api/utils";
 import getSymbolFromCurrency from "currency-symbol-map";
 import isEqual from "lodash.isequal";
-import { createContext, useCallback, useEffect, useState } from "react";
-
-export type CurrencyData = {
-    currency: string;
-    currencySybmol: string;
-    conversionRate: number;
-    currenciesList: any;
-};
-
-export type CurrencyContextType = {
-    currencyData: CurrencyData;
-    updateCurrencyData: (newCurrencyData: CurrencyData) => void;
-};
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
+import { UserDataContext } from "../demo/user-data-provider";
+import {
+    CurrencyContextType,
+    CurrencyData,
+    UserDataContextType,
+} from "@/app/lib/types";
 
 export const CurrencyContext = createContext<CurrencyContextType>({
     currencyData: {
@@ -35,6 +35,9 @@ export default function CurrencyProvider({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { userData, updateUserData } =
+        useContext<UserDataContextType>(UserDataContext);
+
     const [currencyData, setCurrencyData] = useState<CurrencyData>({
         currency: "USD",
         currencySybmol: "$",
@@ -48,17 +51,31 @@ export default function CurrencyProvider({
                 currencyData.currency,
                 newCurrencyData.currency,
             ).then((result) => {
-                const currencySymbol =
+                const cSymbol =
                     getSymbolFromCurrency(newCurrencyData.currency) || " ";
+                const cRate = result.conversionRate;
+
+                const newUserData = Object.fromEntries(
+                    Object.entries(userData).map(([key, value]) => {
+                        if (typeof value === "number") {
+                            return [
+                                key,
+                                parseFloat((value * cRate).toFixed(2)),
+                            ];
+                        } else return [key, value];
+                    }),
+                );
                 setCurrencyData({
                     ...newCurrencyData,
-                    currencySybmol: currencySymbol,
-                    conversionRate: result.conversionRate,
+                    currencySybmol: cSymbol,
+                    conversionRate: cRate,
                 });
-                console.log("SET TO", newCurrencyData);
+                updateUserData({ ...newUserData });
+
+                console.log("SET TO", newCurrencyData, newUserData);
             });
         },
-        [currencyData.currency],
+        [currencyData.currency, updateUserData, userData],
     );
 
     const fetchCurrenciesList = useCallback(() => {

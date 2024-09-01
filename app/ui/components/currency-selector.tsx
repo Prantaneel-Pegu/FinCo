@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useContext, useMemo } from "react";
-import { CurrencyContext, CurrencyContextType } from "./currency-provider";
+
 import {
     Select,
     SelectContent,
@@ -10,14 +10,21 @@ import {
     SelectValue,
 } from "@/app/ui/shadcn-components/ui/select";
 import getSymbolFromCurrency from "currency-symbol-map";
+import { CurrencyData, UpdateCurrencyData } from "@/app/lib/types";
 
-export default function CurrencySelector() {
-    const { currencyData, updateCurrencyData } =
-        useContext<CurrencyContextType>(CurrencyContext);
+export default function CurrencySelector({
+    currencyData,
+    updateCurrencyDataContainer,
+}: {
+    currencyData: CurrencyData;
+    updateCurrencyDataContainer: { updateCurrencyData: UpdateCurrencyData }; // Since functions cannot be passed to client components
+}) {
+    const updateCurrencyData = updateCurrencyDataContainer.updateCurrencyData;
 
     const changeCurrency = useCallback(
         (targetCurrency: string) => {
             updateCurrencyData({ ...currencyData, currency: targetCurrency });
+
             console.log("UPDATED", targetCurrency);
         },
         [currencyData, updateCurrencyData],

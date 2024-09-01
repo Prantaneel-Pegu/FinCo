@@ -4,7 +4,6 @@ const name = "Adelaide Robbins";
 const userName = "Adelaide";
 const avatarLink = "/demoUserAvatar.jpg";
 const netWorth = 926350;
-const currencySybmol = "$";
 
 // 8 + 32 + 12 + 44 + 4 = 100
 const cashAmount = parseFloat(
@@ -28,7 +27,6 @@ export const demoUserData: UserData = {
     userName: userName,
     avatarLink: avatarLink,
     netWorth: netWorth,
-    currencySymbol: currencySybmol,
     cashAmount: cashAmount,
     stocksValue: stocksValue,
     bondsValue: bondsValue,
