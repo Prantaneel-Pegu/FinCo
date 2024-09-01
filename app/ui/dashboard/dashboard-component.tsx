@@ -9,12 +9,71 @@ import {
     CardTitle,
 } from "../shadcn-components/ui/card";
 import CurrencySelector from "../components/currency-selector";
+import { useContext, useState } from "react";
+import {
+    CurrencyContextType,
+    CurrencyContext,
+} from "../components/currency-provider";
 
 export default function DashboardComponent({
-    userData,
+    defaultUserData,
 }: {
-    userData: UserData;
+    defaultUserData: UserData;
 }) {
+    const { currencyData, updateCurrencyData } =
+        useContext<CurrencyContextType>(CurrencyContext);
+    const [userData, setUserData] = useState(defaultUserData); //Create User Data Context
+
+    const cRate = currencyData.conversionRate;
+    const cSymbol = currencyData.currencySybmol;
+
+    const localisedUserData = Object.fromEntries(
+        Object.entries(userData).map(([key, value]) => {
+            if (typeof value === "number") {
+                if (currencyData.currency !== "INR") {
+                    console.log(
+                        value,
+                        cRate,
+                        parseFloat((value * cRate).toFixed(2)),
+                    );
+                    if (key === "cashAmount") {
+                        return [
+                            key,
+                            Intl.NumberFormat("en-US", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat((value * cRate).toFixed(2))),
+                        ];
+                    } else
+                        return [
+                            key,
+                            Intl.NumberFormat("en-US", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat((value * cRate).toFixed(2))),
+                        ];
+                } else {
+                    if (key === "cashAmount") {
+                        return [
+                            key,
+                            Intl.NumberFormat("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat((value * cRate).toFixed(2))),
+                        ];
+                    } else
+                        return [
+                            key,
+                            Intl.NumberFormat("en-IN", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat((value * cRate).toFixed(2))),
+                        ];
+                }
+            } else return [key, value];
+        }),
+    );
+
+    // console.log(cSymbol, cRate, userData, localisedUserData);
+
     return (
         <main className="mb-80 px-5">
             <section className="mb-10">
@@ -34,12 +93,13 @@ export default function DashboardComponent({
                         <CardHeader>
                             <CardTitle>Bank Balance</CardTitle>{" "}
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="break-words">
                             <p className="text-2xl font-semibold">
-                                {userData.cashAmount.split(".")[0]}
+                                {cSymbol}
+                                {localisedUserData.cashAmount.split(".")[0]}
                                 <span className="text-gray-400">
                                     {"."}
-                                    {userData.cashAmount.split(".")[1]}
+                                    {localisedUserData.cashAmount.split(".")[1]}
                                 </span>
                             </p>
                         </CardContent>
@@ -60,37 +120,39 @@ export default function DashboardComponent({
                 <section>
                     <Card className="rounded-3xl border-2 border-gray-300 shadow-lg">
                         <CardHeader>
-                            <CardTitle>Your Assets</CardTitle>{" "}
+                            <CardTitle>Your Assets</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <section>
+                            <section className="break-words">
                                 <ul className="flex flex-col gap-4 text-lg">
                                     <li>
                                         <span className="font-medium">
-                                            Cash:{" "}
-                                            {userData.cashAmount.split(".")[0]}
+                                            Cash: {cSymbol}
+                                            {localisedUserData.cashAmount}
                                         </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Stocks: {userData.stocksValue}
+                                            Stocks: {cSymbol}
+                                            {localisedUserData.stocksValue}
                                         </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Bonds: {userData.bondsValue}
+                                            Bonds: {cSymbol}
+                                            {localisedUserData.bondsValue}
                                         </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Properties:{" "}
-                                            {userData.propertiesValue}
+                                            Properties: {cSymbol}
+                                            {localisedUserData.propertiesValue}
                                         </span>
                                     </li>
                                     <li>
                                         <span className="font-medium">
-                                            Other Assets:{" "}
-                                            {userData.otherAssetsValue}
+                                            Other Assets: {cSymbol}
+                                            {localisedUserData.otherAssetsValue}
                                         </span>
                                     </li>
                                 </ul>
