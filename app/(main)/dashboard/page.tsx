@@ -1,3 +1,5 @@
+"use client";
+
 import { CurrencyContextType } from "@/app/lib/types";
 import DashboardComponent from "@/app/ui/dashboard/dashboard-component";
 import { UserDataContext } from "@/app/ui/main/user-data-provider";
