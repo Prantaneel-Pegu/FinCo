@@ -15,7 +15,9 @@ export default function Dashboard() {
         <DashboardComponent
             userData={userData}
             currencyData={currencyData}
-            updateCurrencyData={updateCurrencyData}
+            updateCurrencyDataContainer={{
+                updateCurrencyData: updateCurrencyData,
+            }}
         />
     );
 }
