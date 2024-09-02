@@ -1,6 +1,7 @@
 "use client";
 
 import { CurrencyData, UpdateCurrencyData, UserData } from "@/app/lib/types";
+import CurrencySelector from "../components/currency-selector";
 import {
     Card,
     CardContent,
@@ -8,7 +9,15 @@ import {
     CardHeader,
     CardTitle,
 } from "../shadcn-components/ui/card";
-import CurrencySelector from "../components/currency-selector";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../shadcn-components/ui/table";
+import AssetsPieChart from "./assets-pie-chart";
 
 export default function DashboardComponent({
     userData,
@@ -63,6 +72,49 @@ export default function DashboardComponent({
         }),
     );
 
+    const assetsTableData = [
+        [
+            "Cash",
+            localisedUserData.cashAmount,
+            Math.round(
+                (parseFloat(localisedUserData.cashAmount) * 100) /
+                    parseFloat(localisedUserData.netWorth),
+            ),
+        ],
+        [
+            "Stocks",
+            localisedUserData.stocksValue,
+            Math.round(
+                (parseFloat(localisedUserData.stocksValue) * 100) /
+                    parseFloat(localisedUserData.netWorth),
+            ),
+        ],
+        [
+            "Bonds",
+            localisedUserData.bondsValue,
+            Math.round(
+                (parseFloat(localisedUserData.bondsValue) * 100) /
+                    parseFloat(localisedUserData.netWorth),
+            ),
+        ],
+        [
+            "Properties",
+            localisedUserData.propertiesValue,
+            Math.round(
+                (parseFloat(localisedUserData.propertiesValue) * 100) /
+                    parseFloat(localisedUserData.netWorth),
+            ),
+        ],
+        [
+            "Other Assets",
+            localisedUserData.otherAssetsValue,
+            Math.round(
+                (parseFloat(localisedUserData.otherAssetsValue) * 100) /
+                    parseFloat(localisedUserData.netWorth),
+            ),
+        ],
+    ];
+
     // console.log(cSymbol, cRate, userData, localisedUserData);
 
     return (
@@ -85,7 +137,7 @@ export default function DashboardComponent({
                 </section>
 
                 <section>
-                    <Card className="rounded-3xl border-2 border-gray-300 shadow-lg">
+                    <Card className="max-w-sm rounded-3xl border-2 border-gray-300 shadow-lg">
                         <CardHeader>
                             <CardTitle>Bank Balance</CardTitle>{" "}
                         </CardHeader>
@@ -114,45 +166,44 @@ export default function DashboardComponent({
                 </section>
 
                 <section>
-                    <Card className="rounded-3xl border-2 border-gray-300 shadow-lg">
+                    <Card className="max-w-max rounded-3xl border-2 border-gray-300 shadow-lg">
                         <CardHeader>
                             <CardTitle>Your Assets</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <section className="break-words">
-                                <ul className="flex flex-col gap-4 text-lg">
-                                    <li>
-                                        <span className="font-medium">
-                                            Cash: {cSymbol}
-                                            {localisedUserData.cashAmount}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="font-medium">
-                                            Stocks: {cSymbol}
-                                            {localisedUserData.stocksValue}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="font-medium">
-                                            Bonds: {cSymbol}
-                                            {localisedUserData.bondsValue}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="font-medium">
-                                            Properties: {cSymbol}
-                                            {localisedUserData.propertiesValue}
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className="font-medium">
-                                            Other Assets: {cSymbol}
-                                            {localisedUserData.otherAssetsValue}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </section>
+                            <Table className="-ml-3 -mt-4">
+                                <TableHeader>
+                                    <TableRow className="text-lg">
+                                        <TableHead>Asset</TableHead>
+                                        <TableHead>Value</TableHead>
+                                        <TableHead>% of Net Worth</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {assetsTableData.map((assetData, id) => (
+                                        <TableRow
+                                            key={id}
+                                            className="text-base"
+                                        >
+                                            <TableCell className="font-medium">
+                                                {assetData[0]}
+                                            </TableCell>
+                                            <TableCell>
+                                                {cSymbol}
+                                                {assetData[1]}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                {assetData[2]}%
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            <article className="mt-8">
+                                <AssetsPieChart
+                                    assetsTableData={assetsTableData}
+                                />
+                            </article>
                         </CardContent>
                         <CardFooter>
                             <div className="mr-3 text-nowrap rounded-2xl bg-success-light px-2 py-1">
@@ -169,8 +220,6 @@ export default function DashboardComponent({
                         </CardFooter>
                     </Card>
                 </section>
-
-                <section></section>
             </div>
         </main>
     );

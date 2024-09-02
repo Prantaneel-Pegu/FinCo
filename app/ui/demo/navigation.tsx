@@ -1,13 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Turn as NavButton } from "hamburger-react";
 import Link from "next/link";
 import Image from "next/image";
+import { UserDataContextType } from "../main/user-data-provider";
+import { UserDataContext } from "./user-data-provider";
 
 export default function DemoNavigation() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const navPanel = useRef<HTMLDivElement>(null);
+    const { userData, updateUserData } =
+        useContext<UserDataContextType>(UserDataContext);
 
     function toggleNav(navToggled: boolean) {
         if (navToggled) {
@@ -43,8 +47,9 @@ export default function DemoNavigation() {
                             alt="User Avatar"
                             width={56}
                             height={56}
-                            className="mb-8 rounded-full"
+                            className="mb-6 rounded-full"
                         />
+                        <p className="mb-8 text-2xl">{userData.name}</p>
                     </section>
                     <Link
                         href={"/demo/dashboard"}
