@@ -169,6 +169,8 @@ export default function DashboardComponent({
                         </CardFooter>
                     </Card>
                 </section>
+
+                <section></section>
             </div>
         </main>
     );
