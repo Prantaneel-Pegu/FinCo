@@ -167,11 +167,11 @@ export default function DashboardComponent({
 
                 <section>
                     <Card className="max-w-max rounded-3xl border-2 border-gray-300 shadow-lg">
-                        <CardHeader>
+                        <CardHeader className="pb-3">
                             <CardTitle>Your Assets</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <Table className="-ml-3 -mt-4">
+                            <Table className="-ml-3">
                                 <TableHeader>
                                     <TableRow className="text-lg">
                                         <TableHead>Asset</TableHead>
