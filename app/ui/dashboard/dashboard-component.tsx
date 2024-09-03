@@ -2,22 +2,11 @@
 
 import { CurrencyData, UpdateCurrencyData, UserData } from "@/app/lib/types";
 import CurrencySelector from "../components/currency-selector";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "../shadcn-components/ui/card";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "../shadcn-components/ui/table";
-import AssetsPieChart from "./assets-pie-chart";
+
+import NetWorthCard from "./net-worth-card";
+import BankBalanceCard from "./bank-balance-card";
+import AssetsDistributionCard from "./assets-distribution-card";
+import RiskAssessmentCard from "./risk-assessment-card";
 
 export default function DashboardComponent({
     userData,
@@ -137,88 +126,36 @@ export default function DashboardComponent({
                 </section>
 
                 <section>
-                    <Card className="max-w-sm rounded-3xl border-2 border-gray-300 shadow-lg">
-                        <CardHeader>
-                            <CardTitle>Bank Balance</CardTitle>{" "}
-                        </CardHeader>
-                        <CardContent className="break-words">
-                            <p className="text-2xl font-semibold">
-                                {cSymbol}
-                                {localisedUserData.cashAmount.split(".")[0]}
-                                <span className="text-gray-400">
-                                    {"."}
-                                    {localisedUserData.cashAmount.split(".")[1]}
-                                </span>
-                            </p>
-                        </CardContent>
-                        <CardFooter>
-                            <div className="mr-2 rounded-2xl bg-success-light px-2 py-1">
-                                <p className="text-sm">
-                                    <span className="text-success-dark">+</span>{" "}
-                                    12.1%
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400"> vs last month</p>
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    <NetWorthCard
+                        netWorth={cSymbol.concat(
+                            " ",
+                            localisedUserData.netWorth,
+                        )}
+                        didIncreaseWithTime={true}
+                        percentChangeWithTime="13.2"
+                    />
                 </section>
 
                 <section>
-                    <Card className="max-w-max rounded-3xl border-2 border-gray-300 shadow-lg">
-                        <CardHeader className="pb-3">
-                            <CardTitle>Your Assets</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <Table className="-ml-3">
-                                <TableHeader>
-                                    <TableRow className="text-lg">
-                                        <TableHead>Asset</TableHead>
-                                        <TableHead>Value</TableHead>
-                                        <TableHead>% of Net Worth</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {assetsTableData.map((assetData, id) => (
-                                        <TableRow
-                                            key={id}
-                                            className="text-base"
-                                        >
-                                            <TableCell className="font-medium">
-                                                {assetData[0]}
-                                            </TableCell>
-                                            <TableCell>
-                                                {cSymbol}
-                                                {assetData[1]}
-                                            </TableCell>
-                                            <TableCell className="text-center">
-                                                {assetData[2]}%
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            <article className="mt-8">
-                                <AssetsPieChart
-                                    assetsTableData={assetsTableData}
-                                />
-                            </article>
-                        </CardContent>
-                        <CardFooter>
-                            <div className="mr-3 text-nowrap rounded-2xl bg-success-light px-2 py-1">
-                                <p className="text-sm">
-                                    <span className="text-success-dark">-</span>{" "}
-                                    8.5%
-                                </p>
-                            </div>
-                            <div>
-                                <p className="text-gray-400">
-                                    decrease in total asset risk
-                                </p>
-                            </div>
-                        </CardFooter>
-                    </Card>
+                    <BankBalanceCard
+                        currencySymbol={cSymbol}
+                        balance={localisedUserData.cashAmount}
+                        didIncreaseWithTime={true}
+                        percentChangeWithTime={"12.1"}
+                    />
+                </section>
+
+                <section>
+                    <AssetsDistributionCard
+                        currencySymbol={cSymbol}
+                        assetsTableData={assetsTableData}
+                        didIncreaseWithTime={true}
+                        percentChangeWithTime={"8.5"}
+                    />
+                </section>
+
+                <section>
+                    <RiskAssessmentCard />
                 </section>
             </div>
         </main>
