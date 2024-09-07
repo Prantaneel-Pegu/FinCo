@@ -1,8 +1,18 @@
 "use client";
 
-import { CurrencyData, UpdateCurrencyData, UserData } from "@/app/lib/types";
+import {
+    AssetsData,
+    AssetsPieChartData,
+    AssetsRiskBarChartData,
+    AssetsRiskData,
+    AssetsTableData,
+    CurrencyData,
+    LocalisedAssetsData,
+    LocalisedUserData,
+    UpdateCurrencyData,
+    UserData,
+} from "@/app/lib/types";
 import CurrencySelector from "../components/currency-selector";
-
 import NetWorthCard from "./net-worth-card";
 import BankBalanceCard from "./bank-balance-card";
 import AssetsDistributionCard from "./assets-distribution-card";
@@ -21,90 +31,123 @@ export default function DashboardComponent({
 
     const cSymbol = currencyData.currencySybmol;
 
-    const localisedUserData = Object.fromEntries(
+    const localisedUserData: LocalisedUserData = Object.fromEntries(
         Object.entries(userData).map(([key, value]) => {
-            if (typeof value === "number") {
+            if (key === "netWorth" && typeof value === "number") {
                 if (currencyData.currency !== "INR") {
-                    if (key === "cashAmount") {
-                        return [
-                            key,
-                            Intl.NumberFormat("en-US", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            }).format(parseFloat(value.toFixed(2))),
-                        ];
-                    } else
-                        return [
-                            key,
-                            Intl.NumberFormat("en-US", {
-                                maximumFractionDigits: 2,
-                            }).format(parseFloat(value.toFixed(2))),
-                        ];
+                    return [
+                        key,
+                        Intl.NumberFormat("en-US", {
+                            maximumFractionDigits: 2,
+                        }).format(parseFloat(value.toFixed(2))),
+                    ];
                 } else {
-                    if (key === "cashAmount") {
-                        return [
-                            key,
-                            Intl.NumberFormat("en-IN", {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                            }).format(parseFloat(value.toFixed(2))),
-                        ];
-                    } else
-                        return [
-                            key,
-                            Intl.NumberFormat("en-IN", {
-                                maximumFractionDigits: 2,
-                            }).format(parseFloat(value.toFixed(2))),
-                        ];
+                    return [
+                        key,
+                        Intl.NumberFormat("en-IN", {
+                            maximumFractionDigits: 2,
+                        }).format(parseFloat(value.toFixed(2))),
+                    ];
                 }
+            }
+
+            if (Array.isArray(value)) {
+                const localisedAssetsData: LocalisedAssetsData = [];
+
+                for (let i = 0; i < value.length; i++) {
+                    if (currencyData.currency !== "INR") {
+                        if (value[i].name.toLowerCase() === "cash") {
+                            localisedAssetsData.push({
+                                ...value[i],
+                                value: Intl.NumberFormat("en-US", {
+                                    maximumFractionDigits: 2,
+                                }).format(
+                                    parseFloat(value[i].value.toFixed(2)),
+                                ),
+                            });
+                        } else
+                            localisedAssetsData.push({
+                                ...value[i],
+                                value: Intl.NumberFormat("en-US", {
+                                    maximumFractionDigits: 2,
+                                }).format(
+                                    parseFloat(value[i].value.toFixed(2)),
+                                ),
+                            });
+                    } else {
+                        if (value[i].name.toLowerCase() === "cash") {
+                            localisedAssetsData.push({
+                                ...value[i],
+                                value: Intl.NumberFormat("en-IN", {
+                                    maximumFractionDigits: 2,
+                                }).format(
+                                    parseFloat(value[i].value.toFixed(2)),
+                                ),
+                            });
+                        } else
+                            localisedAssetsData.push({
+                                ...value[i],
+                                value: Intl.NumberFormat("en-IN", {
+                                    maximumFractionDigits: 2,
+                                }).format(
+                                    parseFloat(value[i].value.toFixed(2)),
+                                ),
+                            });
+                    }
+                }
+                return [key, localisedAssetsData];
             } else return [key, value];
         }),
     );
 
-    const assetsTableData = [
-        [
-            "Cash",
-            localisedUserData.cashAmount,
-            Math.round(
-                (parseFloat(localisedUserData.cashAmount) * 100) /
-                    parseFloat(localisedUserData.netWorth),
-            ),
-        ],
-        [
-            "Stocks",
-            localisedUserData.stocksValue,
-            Math.round(
-                (parseFloat(localisedUserData.stocksValue) * 100) /
-                    parseFloat(localisedUserData.netWorth),
-            ),
-        ],
-        [
-            "Bonds",
-            localisedUserData.bondsValue,
-            Math.round(
-                (parseFloat(localisedUserData.bondsValue) * 100) /
-                    parseFloat(localisedUserData.netWorth),
-            ),
-        ],
-        [
-            "Properties",
-            localisedUserData.propertiesValue,
-            Math.round(
-                (parseFloat(localisedUserData.propertiesValue) * 100) /
-                    parseFloat(localisedUserData.netWorth),
-            ),
-        ],
-        [
-            "Other Assets",
-            localisedUserData.otherAssetsValue,
-            Math.round(
-                (parseFloat(localisedUserData.otherAssetsValue) * 100) /
-                    parseFloat(localisedUserData.netWorth),
-            ),
-        ],
-    ];
+    const assetsTableData: AssetsTableData = localisedUserData.assets.map(
+        (asset) => {
+            return {
+                name: asset.name,
+                value: asset.value,
+                percentageOfNetWorth: Math.round(
+                    (parseFloat(asset.value.replaceAll(",", "")) * 100) /
+                        userData.netWorth,
+                ),
+            };
+        },
+    );
 
-    // console.log(cSymbol, cRate, userData, localisedUserData);
+    const assetsPieChartData: AssetsPieChartData = userData.assets.map(
+        (asset) => {
+            return {
+                name: asset.name,
+                value: asset.value,
+                percentageOfNetWorth: Math.round(
+                    (asset.value * 100) / userData.netWorth,
+                ),
+            };
+        },
+    );
+
+    const assetsRiskData: AssetsRiskData = userData.assets.map((asset) => {
+        return {
+            name: asset.name,
+            riskValue: asset.riskValue,
+            percentageOfNetWorth: Math.round(
+                (asset.value * 100) / userData.netWorth,
+            ),
+            riskContribution: Math.round(
+                ((asset.value * 100) / userData.netWorth) * asset.riskValue,
+            ), // percentageOfNetWorth * riskValue
+        };
+    });
+
+    const assetsRiskBarChartData: AssetsRiskBarChartData = userData.assets.map(
+        (asset) => {
+            return {
+                asset: asset.name,
+                riskPoints: Math.round(
+                    ((asset.value * 100) / userData.netWorth) * asset.riskValue,
+                ), // percentageOfNetWorth * riskValue
+            };
+        },
+    );
 
     return (
         <main className="mb-80 px-5">
@@ -131,31 +174,38 @@ export default function DashboardComponent({
                             " ",
                             localisedUserData.netWorth,
                         )}
-                        didIncreaseWithTime={true}
-                        percentChangeWithTime="13.2"
                     />
                 </section>
 
-                <section>
-                    <BankBalanceCard
-                        currencySymbol={cSymbol}
-                        balance={localisedUserData.cashAmount}
-                        didIncreaseWithTime={true}
-                        percentChangeWithTime={"12.1"}
-                    />
-                </section>
+                {localisedUserData.assets.find(
+                    (asset) => asset.name.toLowerCase() === "cash",
+                )?.value !== undefined ? (
+                    <section>
+                        <BankBalanceCard
+                            balance={cSymbol.concat(
+                                " ",
+                                localisedUserData.assets.find(
+                                    (asset) =>
+                                        asset.name.toLowerCase() === "cash",
+                                )!.value,
+                            )}
+                        />
+                    </section>
+                ) : null}
 
                 <section>
                     <AssetsDistributionCard
                         currencySymbol={cSymbol}
                         assetsTableData={assetsTableData}
-                        didIncreaseWithTime={true}
-                        percentChangeWithTime={"8.5"}
+                        assetsPieChartData={assetsPieChartData}
                     />
                 </section>
 
                 <section>
-                    <RiskAssessmentCard />
+                    <RiskAssessmentCard
+                        assetsRiskData={assetsRiskData}
+                        assetsRiskBarChartData={assetsRiskBarChartData}
+                    />
                 </section>
             </div>
         </main>

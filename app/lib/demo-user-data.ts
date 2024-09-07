@@ -5,7 +5,7 @@ const userName = "Adelaide";
 const avatarLink = "/demoUserAvatar.jpg";
 const netWorth = 926350;
 
-// 8 + 32 + 12 + 44 + 4 = 100
+// 8 + 32 + 12 + 48 = 100
 const cashAmount = parseFloat(
     ((parseFloat(netWorth.toString()) * 8) / 100).toFixed(2),
 );
@@ -16,10 +16,7 @@ const bondsValue = parseFloat(
     ((parseFloat(netWorth.toString()) * 12) / 100).toFixed(2),
 );
 const propertiesValue = parseFloat(
-    ((parseFloat(netWorth.toString()) * 44) / 100).toFixed(2),
-);
-const otherAssetsValue = parseFloat(
-    ((parseFloat(netWorth.toString()) * 4) / 100).toFixed(2),
+    ((parseFloat(netWorth.toString()) * 48) / 100).toFixed(2),
 );
 
 export const demoUserData: UserData = {
@@ -27,9 +24,26 @@ export const demoUserData: UserData = {
     userName: userName,
     avatarLink: avatarLink,
     netWorth: netWorth,
-    cashAmount: cashAmount,
-    stocksValue: stocksValue,
-    bondsValue: bondsValue,
-    propertiesValue: propertiesValue,
-    otherAssetsValue: otherAssetsValue,
+    assets: [
+        {
+            name: "Cash",
+            value: cashAmount,
+            riskValue: 0.2,
+        },
+        {
+            name: "Stocks",
+            value: stocksValue,
+            riskValue: 0.55,
+        },
+        {
+            name: "Bonds",
+            value: bondsValue,
+            riskValue: 0.15,
+        },
+        {
+            name: "Properties",
+            value: propertiesValue,
+            riskValue: 0.1,
+        },
+    ],
 };

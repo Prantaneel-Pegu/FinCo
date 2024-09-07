@@ -13,15 +13,15 @@ export default function ThemedCard({
 }: {
     cardTitle: string;
     cardContent: Readonly<React.ReactNode>;
-    cardFooter: Readonly<React.ReactNode>;
+    cardFooter?: Readonly<React.ReactNode>;
 }) {
     return (
         <Card className="max-w-sm rounded-3xl border-2 border-gray-300 shadow-lg">
             <CardHeader>
                 <CardTitle>{cardTitle}</CardTitle>
             </CardHeader>
-            <CardContent className="break-words">{cardContent}</CardContent>
-            <CardFooter>{cardFooter}</CardFooter>
+            <CardContent>{cardContent}</CardContent>
+            {cardFooter ? <CardFooter>{cardFooter}</CardFooter> : null}
         </Card>
     );
 }

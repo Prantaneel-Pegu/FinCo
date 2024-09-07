@@ -46,9 +46,12 @@ export default function CurrencySelector({
 
     return (
         <div className="flex justify-end">
-            <Select onValueChange={(selection) => changeCurrency(selection)}>
+            <Select
+                onValueChange={(selection) => changeCurrency(selection)}
+                defaultValue="USD"
+            >
                 <SelectTrigger className="w-max">
-                    <SelectValue placeholder="Select Currency" />
+                    <SelectValue placeholder={"($) USD"} />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="USD" key={"defaultCurrency"}>

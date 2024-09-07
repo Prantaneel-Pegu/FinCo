@@ -18,75 +18,47 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "../shadcn-components/ui/chart";
+import { AssetsPieChartData } from "@/app/lib/types";
 
 export const description = "Assets Distribution Pie Chart";
 
 export default function AssetsPieChart({
-    assetsTableData,
+    assetsPieChartData,
 }: {
-    assetsTableData: (string | number)[][];
+    assetsPieChartData: AssetsPieChartData;
 }) {
-    const chartConfig = {
-        [assetsTableData[3][0]]: {
-            label: assetsTableData[3][0],
-            color: "hsl(var(--chart-1))",
-        },
-        [assetsTableData[1][0]]: {
-            label: assetsTableData[1][0],
-            color: "hsl(var(--chart-2))",
-        },
-        [assetsTableData[2][0]]: {
-            label: assetsTableData[2][0],
-            color: "hsl(var(--chart-3))",
-        },
-        [assetsTableData[0][0]]: {
-            label: assetsTableData[0][0],
-            color: "hsl(var(--chart-4))",
-        },
-        [assetsTableData[4][0]]: {
-            label: assetsTableData[4][0],
-            color: "hsl(var(--chart-5))",
-        },
-    } satisfies ChartConfig;
+    // Sorting assets by descending value so that pie-chart looks consistent
 
-    const chartData = [
-        {
-            asset: assetsTableData[3][0],
-            percentage: assetsTableData[3][2],
-            fill: "hsl(var(--chart-1))",
-        },
+    assetsPieChartData = assetsPieChartData.sort(
+        (asset1, asset2) => asset1.value - asset2.value,
+    );
 
-        {
-            asset: assetsTableData[1][0],
-            percentage: assetsTableData[1][2],
-            fill: "hsl(var(--chart-2))",
-        },
-        {
-            asset: assetsTableData[2][0],
-            percentage: assetsTableData[2][2],
-            fill: "hsl(var(--chart-3))",
-        },
-        {
-            asset: assetsTableData[0][0],
-            percentage: assetsTableData[0][2],
-            fill: "hsl(var(--chart-4))",
-        },
-        {
-            asset: assetsTableData[4][0],
-            percentage: assetsTableData[4][2],
-            fill: "hsl(var(--chart-5))",
-        },
-    ];
+    const chartConfig = Object.fromEntries(
+        assetsPieChartData.map((asset, index) => [
+            asset.name,
+            {
+                label: asset.name,
+                color: `hsl(var(--chart-${index + 1}))`, // FIX COLOR FOR 5+
+            },
+        ]),
+    ) satisfies ChartConfig;
+
+    const chartData = assetsPieChartData.map((asset, id) => {
+        return {
+            asset: asset.name,
+            percentage: asset.percentageOfNetWorth,
+            fill: `hsl(var(--chart-${id + 1}))`, // CORRECT FILLL FOR ASSETS MORE THAN FIVE
+        };
+    });
 
     // .recharts-legend-wrapper is modified in globals.css file
-
     return (
-        <Card className="flex flex-col">
+        <Card className="-mx-2 flex flex-col">
             <CardHeader className="items-center pb-0">
                 <CardTitle>Assets Distribution</CardTitle>
                 <CardDescription>% of net worth</CardDescription>
             </CardHeader>
-            <CardContent className="my-6 mb-12 flex-1 p-0">
+            <CardContent className="my-6 mb-16 flex-1 p-0">
                 <ChartContainer
                     config={chartConfig}
                     className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[290px] pb-0"
