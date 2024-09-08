@@ -2,6 +2,7 @@
 
 import {
     AssetsData,
+    AssetsInterestData,
     AssetsPieChartData,
     AssetsRiskBarChartData,
     AssetsRiskData,
@@ -17,6 +18,8 @@ import NetWorthCard from "./net-worth-card";
 import BankBalanceCard from "./bank-balance-card";
 import AssetsDistributionCard from "./assets-distribution-card";
 import RiskAssessmentCard from "./risk-assessment-card";
+import InvestmentTipsCard from "./investment-tips-card";
+import PortfolioInterestCard from "./portfolio-interest-card";
 
 export default function DashboardComponent({
     userData,
@@ -56,43 +59,25 @@ export default function DashboardComponent({
 
                 for (let i = 0; i < value.length; i++) {
                     if (currencyData.currency !== "INR") {
-                        if (value[i].name.toLowerCase() === "cash") {
-                            localisedAssetsData.push({
-                                ...value[i],
-                                value: Intl.NumberFormat("en-US", {
-                                    maximumFractionDigits: 2,
-                                }).format(
-                                    parseFloat(value[i].value.toFixed(2)),
-                                ),
-                            });
-                        } else
-                            localisedAssetsData.push({
-                                ...value[i],
-                                value: Intl.NumberFormat("en-US", {
-                                    maximumFractionDigits: 2,
-                                }).format(
-                                    parseFloat(value[i].value.toFixed(2)),
-                                ),
-                            });
+                        localisedAssetsData.push({
+                            ...value[i],
+                            value: Intl.NumberFormat("en-US", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat(value[i].value.toFixed(2))),
+                            interest: Intl.NumberFormat("en-US", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat(value[i].interest.toFixed(2))),
+                        });
                     } else {
-                        if (value[i].name.toLowerCase() === "cash") {
-                            localisedAssetsData.push({
-                                ...value[i],
-                                value: Intl.NumberFormat("en-IN", {
-                                    maximumFractionDigits: 2,
-                                }).format(
-                                    parseFloat(value[i].value.toFixed(2)),
-                                ),
-                            });
-                        } else
-                            localisedAssetsData.push({
-                                ...value[i],
-                                value: Intl.NumberFormat("en-IN", {
-                                    maximumFractionDigits: 2,
-                                }).format(
-                                    parseFloat(value[i].value.toFixed(2)),
-                                ),
-                            });
+                        localisedAssetsData.push({
+                            ...value[i],
+                            value: Intl.NumberFormat("en-IN", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat(value[i].value.toFixed(2))),
+                            interest: Intl.NumberFormat("en-IN", {
+                                maximumFractionDigits: 2,
+                            }).format(parseFloat(value[i].interest.toFixed(2))),
+                        });
                     }
                 }
                 return [key, localisedAssetsData];
@@ -149,6 +134,24 @@ export default function DashboardComponent({
         },
     );
 
+    const assetsInterestData: AssetsInterestData = userData.assets.map(
+        (asset) => {
+            return {
+                name: asset.name,
+                value: asset.value,
+                interest: localisedUserData.assets.find(
+                    (targetAsset) => targetAsset.name === asset.name,
+                )?.interest!,
+                interestRate: asset.interestRate,
+                percentageOfNetWorth: Math.round(
+                    (asset.value * 100) / userData.netWorth,
+                ),
+            };
+        },
+    );
+
+    console.log(userData, assetsInterestData);
+
     return (
         <main className="mb-80 px-5">
             <section className="mb-10">
@@ -202,10 +205,22 @@ export default function DashboardComponent({
                 </section>
 
                 <section>
+                    <PortfolioInterestCard
+                    currencySymbol={cSymbol}
+                        assetsInterestData={assetsInterestData}
+                        netWorth={userData.netWorth}
+                    />
+                </section>
+
+                <section>
                     <RiskAssessmentCard
                         assetsRiskData={assetsRiskData}
                         assetsRiskBarChartData={assetsRiskBarChartData}
                     />
+                </section>
+
+                <section>
+                    <InvestmentTipsCard />
                 </section>
             </div>
         </main>

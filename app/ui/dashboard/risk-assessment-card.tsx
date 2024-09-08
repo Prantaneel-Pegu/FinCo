@@ -31,15 +31,15 @@ export default function RiskAssessment({
     let riskText = "Low";
     let riskTextColor = "text-green-300";
 
-    if (finalTotalRisk > 25) {
-        riskText = "Medium";
-        riskTextColor = "text-amber-500";
-    } else if (finalTotalRisk > 45) {
-        riskText = "High";
-        riskTextColor = "text-red-500";
-    } else {
+    if (finalTotalRisk > 45) {
         riskText = "Dangerously High";
         riskTextColor = "text-red-700";
+    } else if (finalTotalRisk > 35) {
+        riskText = "High";
+        riskTextColor = "text-red-500";
+    } else if (finalTotalRisk > 25) {
+        riskText = "Medium";
+        riskTextColor = "text-amber-500";
     }
 
     return (

@@ -2,12 +2,16 @@ export type AssetsData = {
     name: string;
     value: number;
     riskValue: number;
+    interest: number;
+    interestRate: number; // in decimal form: e.g. 15% p.a. = 15/100 = 0.15
 }[];
 
 export type LocalisedAssetsData = {
     name: string;
     value: string;
     riskValue: number;
+    interest: string;
+    interestRate: number; // in decimal form: e.g. 15% p.a. = 15/100 = 0.15
 }[];
 
 export type UserData = {
@@ -42,12 +46,20 @@ export type AssetsRiskData = {
     name: string;
     percentageOfNetWorth: number;
     riskValue: number;
-    riskContribution: number
+    riskContribution: number;
 }[];
 
 export type AssetsRiskBarChartData = {
     asset: string;
-    riskPoints: number
+    riskPoints: number;
+}[];
+
+export type AssetsInterestData = {
+    name: string;
+    value: number;
+    interest: string;
+    interestRate: number;
+    percentageOfNetWorth: number;
 }[];
 
 export const userDataSkeleton: UserData = {
@@ -57,24 +69,32 @@ export const userDataSkeleton: UserData = {
     netWorth: 0,
     assets: [
         {
-            name: "cash",
+            name: "Cash",
             value: 0,
-            riskValue: 0.2,
+            riskValue: 0,
+            interest: 0,
+            interestRate: 0,
         },
         {
-            name: "stocks",
+            name: "Stocks",
             value: 0,
-            riskValue: 0.55,
+            riskValue: 0,
+            interest: 0,
+            interestRate: 0,
         },
         {
-            name: "bonds",
+            name: "Bonds",
             value: 0,
-            riskValue: 0.15,
+            riskValue: 0,
+            interest: 0,
+            interestRate: 0,
         },
         {
-            name: "properties",
+            name: "Properties",
             value: 0,
             riskValue: 0.1,
+            interest: 0,
+            interestRate: 0,
         },
     ],
 };

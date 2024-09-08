@@ -63,6 +63,19 @@ export default function CurrencyProvider({
                                 key,
                                 parseFloat((value * cRate).toFixed(2)),
                             ];
+                        } else if (Array.isArray(value)) {
+                            const assetData = [];
+
+                            for (let i = 0; i < value.length; i++) {
+                                assetData.push({
+                                    ...value[i],
+                                    value: parseFloat(
+                                        (value[i].value * cRate).toFixed(2),
+                                    ),
+                                });
+                            }
+
+                            return [key, assetData];
                         } else return [key, value];
                     }),
                 );

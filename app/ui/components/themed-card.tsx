@@ -1,6 +1,7 @@
 import {
     Card,
     CardContent,
+    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -8,10 +9,12 @@ import {
 
 export default function ThemedCard({
     cardTitle,
+    cardDescription,
     cardContent,
     cardFooter,
 }: {
     cardTitle: string;
+    cardDescription?: string;
     cardContent: Readonly<React.ReactNode>;
     cardFooter?: Readonly<React.ReactNode>;
 }) {
@@ -19,6 +22,9 @@ export default function ThemedCard({
         <Card className="max-w-sm rounded-3xl border-2 border-gray-300 shadow-lg">
             <CardHeader>
                 <CardTitle>{cardTitle}</CardTitle>
+                {cardDescription ? (
+                    <CardDescription>{cardDescription}</CardDescription>
+                ) : null}
             </CardHeader>
             <CardContent>{cardContent}</CardContent>
             {cardFooter ? <CardFooter>{cardFooter}</CardFooter> : null}

@@ -7,7 +7,7 @@ TASKS:
 
     create privacy policy
 
-    stop from creating 10+ assets. Add colors for 10 assets in PieChart
+    stop from creating 10+ assets. Add colors for atleast 10 assets in PieChart and others (by creating global hsl(!) color variables)
 
 END TASKS:
     Create a template repo with basic settings pre-configured such as my .vscode, prettier config, tailwind config, eslint config etc.
