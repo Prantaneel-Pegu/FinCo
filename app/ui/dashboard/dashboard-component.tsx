@@ -206,7 +206,7 @@ export default function DashboardComponent({
 
                 <section>
                     <PortfolioInterestCard
-                    currencySymbol={cSymbol}
+                        currencySymbol={cSymbol}
                         assetsInterestData={assetsInterestData}
                         netWorth={userData.netWorth}
                     />

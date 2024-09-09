@@ -35,16 +35,20 @@ export default function PortfolioValuationChart({
         nextFiveYears.push(currentYear + i + 1);
     }
 
+    let compoundedPortfolioWorth = netPortfolioWorth;
+
     const chartData = nextFiveYears.map((year, index) => {
+        if (index) {
+            compoundedPortfolioWorth =
+                compoundedPortfolioWorth +
+                compoundedPortfolioWorth * portfolioInterestRate;
+        }
+
         return {
             year: year,
-            "Portfolio Valuation":
-                netPortfolioWorth +
-                netPortfolioWorth * portfolioInterestRate * (index + 1),
+            "Portfolio Valuation": compoundedPortfolioWorth,
         };
     });
-
-    console.log(chartData, portfolioInterestRate); // interest rate???
 
     const chartConfig = {
         year: {
@@ -62,10 +66,11 @@ export default function PortfolioValuationChart({
             <CardHeader>
                 <CardTitle>Annual Portfolio Valuation</CardTitle>
                 <CardDescription>
-                    taking current interest rate as constant
+                    Taking current interest rate as constant compound interest
+                    rate
                 </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="my-2">
                 <ChartContainer config={chartConfig}>
                     <LineChart
                         accessibilityLayer
