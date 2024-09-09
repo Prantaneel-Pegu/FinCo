@@ -153,16 +153,18 @@ export default function DashboardComponent({
     console.log(userData, assetsInterestData);
 
     return (
-        <main className="mb-80 px-5">
-            <section className="mb-10">
-                <h1 className="mt-8 text-2xl font-semibold">
-                    Welcome back, {localisedUserData.userName}!
-                </h1>
-                <p className="text-gray-500">Let&#39;s manage your finances</p>
-            </section>
+        <main className="mb-80 px-5 lg:px-12">
+            <div className="mb-12 mr-8 justify-between lg:flex">
+                <section className="mb-10">
+                    <h1 className="mt-8 text-2xl font-semibold">
+                        Welcome back, {localisedUserData.userName}!
+                    </h1>
+                    <p className="text-gray-500">
+                        Let&#39;s manage your finances
+                    </p>
+                </section>
 
-            <div className="flex flex-col gap-8">
-                <section>
+                <section className="lg:mt-24">
                     <CurrencySelector
                         currencyData={currencyData}
                         updateCurrencyDataContainer={{
@@ -170,8 +172,10 @@ export default function DashboardComponent({
                         }}
                     />
                 </section>
+            </div>
 
-                <section>
+            <div className="lg:dashboard-grid-areas-lg flex auto-cols-fr flex-col gap-8 lg:grid">
+                <section className="[grid-area:netWorth]">
                     <NetWorthCard
                         netWorth={cSymbol.concat(
                             " ",
@@ -183,7 +187,7 @@ export default function DashboardComponent({
                 {localisedUserData.assets.find(
                     (asset) => asset.name.toLowerCase() === "cash",
                 )?.value !== undefined ? (
-                    <section>
+                    <section className="[grid-area:bankBal]">
                         <BankBalanceCard
                             balance={cSymbol.concat(
                                 " ",
@@ -196,7 +200,7 @@ export default function DashboardComponent({
                     </section>
                 ) : null}
 
-                <section>
+                <section className="[grid-area:assetDist]">
                     <AssetsDistributionCard
                         currencySymbol={cSymbol}
                         assetsTableData={assetsTableData}
@@ -204,7 +208,7 @@ export default function DashboardComponent({
                     />
                 </section>
 
-                <section>
+                <section className="[grid-area:pYield]">
                     <PortfolioInterestCard
                         currencySymbol={cSymbol}
                         assetsInterestData={assetsInterestData}
@@ -212,15 +216,11 @@ export default function DashboardComponent({
                     />
                 </section>
 
-                <section>
+                <section className="[grid-area:riskCard]">
                     <RiskAssessmentCard
                         assetsRiskData={assetsRiskData}
                         assetsRiskBarChartData={assetsRiskBarChartData}
                     />
-                </section>
-
-                <section>
-                    <InvestmentTipsCard />
                 </section>
             </div>
         </main>

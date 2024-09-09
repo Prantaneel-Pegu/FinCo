@@ -28,7 +28,7 @@ export default function DemoNavigation() {
 
     return (
         <>
-            <nav className="relative md:hidden">
+            <nav className="relative lg:hidden">
                 <div className="absolute left-1 top-2 z-40">
                     <NavButton
                         size={28}
@@ -80,7 +80,7 @@ export default function DemoNavigation() {
                 </div>
             </nav>
 
-            <nav className="relative ml-auto mr-16 hidden w-max flex-row gap-4 md:flex">
+            <nav className="mx-16 hidden flex-col gap-12 lg:flex">
                 <p className="text-2xl">Sign up</p>
                 <p className="text-2xl">Sign In</p>
                 <p className="text-2xl">About</p>

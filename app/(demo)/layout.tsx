@@ -22,8 +22,16 @@ export default function RootLayout({
             <body className={`${inter.className} text-textColor antialiased`}>
                 <UserDataProvider>
                     <CurrencyProvider>
-                        <Header />
-                        {children}
+                        <div className="lg:hidden">
+                            <Header />
+                            {children}
+                        </div>
+                        <div className="hidden lg:block">
+                            <div className="mr-auto w-[17.5%]">
+                                <Header />
+                            </div>
+                            <div className="ml-auto w-[82.5%]">{children}</div>
+                        </div>
                     </CurrencyProvider>
                 </UserDataProvider>
             </body>

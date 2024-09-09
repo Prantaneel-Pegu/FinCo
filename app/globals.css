@@ -8,6 +8,17 @@
     left: -100%;
 }
 
+/* Dashboard Page */
+
+@layer components {
+    .dashboard-grid-areas-lg {
+        grid-template-areas:
+            "netWorth bankBal riskCard"
+            "assetDist pYield riskCard"
+            "assetDist pYield .";
+    }
+}
+
 /* Charts */
 
 @layer base {
