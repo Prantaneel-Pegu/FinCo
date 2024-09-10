@@ -1,7 +1,6 @@
 "use client";
 
 import {
-    AssetsData,
     AssetsInterestData,
     AssetsPieChartData,
     AssetsRiskBarChartData,
@@ -18,8 +17,9 @@ import NetWorthCard from "./net-worth-card";
 import BankBalanceCard from "./bank-balance-card";
 import AssetsDistributionCard from "./assets-distribution-card";
 import RiskAssessmentCard from "./risk-assessment-card";
-import InvestmentTipsCard from "./investment-tips-card";
 import PortfolioInterestCard from "./portfolio-interest-card";
+import DashboardUserCard from "./user-card";
+import NotificationCard from "./notification-card";
 
 export default function DashboardComponent({
     userData,
@@ -155,8 +155,8 @@ export default function DashboardComponent({
     return (
         <main className="mb-80 px-5 lg:px-12">
             <div className="mb-12 mr-8 justify-between lg:flex">
-                <section className="mb-10">
-                    <h1 className="mt-8 text-2xl font-semibold">
+                <section className="mb-10 mt-8">
+                    <h1 className="text-2xl font-semibold">
                         Welcome back, {localisedUserData.userName}!
                     </h1>
                     <p className="text-gray-500">
@@ -164,7 +164,11 @@ export default function DashboardComponent({
                     </p>
                 </section>
 
-                <section className="lg:mt-24">
+                <section className="lg:mt-8">
+                    <section className="mb-12 flex items-center gap-2">
+                        <NotificationCard />
+                        <DashboardUserCard userData={userData} />
+                    </section>
                     <CurrencySelector
                         currencyData={currencyData}
                         updateCurrencyDataContainer={{

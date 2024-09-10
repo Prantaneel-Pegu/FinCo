@@ -8,6 +8,14 @@
     left: -100%;
 }
 
+/* Navigation */
+
+@layer components {
+    .active-nav-link {
+        @apply  bg-violet-300  !important;
+    }
+}
+
 /* Dashboard Page */
 
 @layer components {

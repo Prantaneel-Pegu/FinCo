@@ -22,6 +22,8 @@ export default function Navigation() {
         setIsNavOpen(false);
     }
 
+    // import useRouter and style active links
+
     return (
         <>
             <nav className="relative md:hidden">

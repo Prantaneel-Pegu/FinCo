@@ -2,6 +2,7 @@ import { UserData } from "./types";
 
 const name = "Adelaide Robbins";
 const userName = "Adelaide";
+const email = "adelaiderob@gmail.com";
 const avatarLink = "/demoUserAvatar.jpg";
 const netWorth = 926350;
 
@@ -23,6 +24,7 @@ export const demoUserData: UserData = {
     name: name,
     userName: userName,
     avatarLink: avatarLink,
+    email: email,
     netWorth: netWorth,
     assets: [
         {

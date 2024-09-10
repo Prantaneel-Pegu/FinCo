@@ -6,12 +6,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserDataContextType } from "../main/user-data-provider";
 import { UserDataContext } from "./user-data-provider";
+import {
+    CircleDollarSign,
+    FileMinus,
+    LayoutDashboard,
+    LogOut,
+    Shield,
+    UserRound,
+} from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function DemoNavigation() {
     const [isNavOpen, setIsNavOpen] = useState(false);
     const navPanel = useRef<HTMLDivElement>(null);
     const { userData, updateUserData } =
         useContext<UserDataContextType>(UserDataContext);
+
+    const pathname = usePathname();
 
     function toggleNav(navToggled: boolean) {
         if (navToggled) {
@@ -80,10 +91,83 @@ export default function DemoNavigation() {
                 </div>
             </nav>
 
-            <nav className="mx-16 hidden flex-col gap-12 lg:flex">
-                <p className="text-2xl">Sign up</p>
-                <p className="text-2xl">Sign In</p>
-                <p className="text-2xl">About</p>
+            <nav className="hidden flex-col justify-between gap-12 pl-6 pr-8 lg:flex">
+                <div className="flex flex-col gap-6">
+                    <Link
+                        href={"/demo/dashboard"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/demo/dashboard" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2">
+                            <span>
+                                <LayoutDashboard />
+                            </span>
+                            <span>Dashboard</span>
+                        </p>
+                    </Link>
+                    <Link
+                        href={"/demo/"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/demo/" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2 text-xl">
+                            <span>
+                                <Shield />
+                            </span>
+                            <span>Risk Mitigation</span>
+                        </p>
+                    </Link>
+                    <Link
+                        href={"/demo/"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/demo/" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2">
+                            <span>
+                                <CircleDollarSign />
+                            </span>
+                            <span>Interest Calculator</span>
+                        </p>
+                    </Link>
+                </div>
+                <div className="absolute bottom-16 left-0 ml-6 mr-8 flex flex-col gap-4">
+                    <Link
+                        href={"/demo/account/settings"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/demo/account/settings" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2">
+                            <span>
+                                <UserRound />
+                            </span>
+                            <span>Account</span>
+                        </p>
+                    </Link>
+                    <Link
+                        href={"/privacy-policy"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/privacy-policy" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2">
+                            <span>
+                                <FileMinus />
+                            </span>
+                            <span>Privacy Policy</span>
+                        </p>
+                    </Link>
+                    <Link
+                        href={"/"}
+                        className={`rounded-full px-8 py-4 text-xl ${pathname === "/" ? "active-nav-link" : ""}`}
+                        onClick={navLinkClicked}
+                    >
+                        <p className="flex items-center gap-2">
+                            <span>
+                                <LogOut />
+                            </span>
+                            <span>Signout</span>
+                        </p>
+                    </Link>
+                </div>
             </nav>
         </>
     );

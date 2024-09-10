@@ -17,6 +17,7 @@ export type LocalisedAssetsData = {
 export type UserData = {
     name: string;
     userName: string;
+    email: string;
     avatarLink: string;
     netWorth: number;
     assets: AssetsData;
@@ -26,6 +27,7 @@ export type LocalisedUserData = {
     name: string;
     userName: string;
     avatarLink: string;
+    email: string;
     netWorth: string;
     assets: LocalisedAssetsData;
 };
@@ -66,6 +68,7 @@ export const userDataSkeleton: UserData = {
     name: "",
     userName: "",
     avatarLink: "",
+    email: "",
     netWorth: 0,
     assets: [
         {
