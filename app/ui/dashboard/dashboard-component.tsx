@@ -165,7 +165,7 @@ export default function DashboardComponent({
                 </section>
 
                 <section className="lg:mt-8">
-                    <section className="mb-12 flex items-center gap-2">
+                    <section className="mb-12 flex flex-col-reverse items-center gap-2 lg:flex-row">
                         <NotificationCard />
                         <DashboardUserCard userData={userData} />
                     </section>
