@@ -6,13 +6,18 @@ import { CurrencyContext } from "@/app/ui/demo/currency-provider";
 import { useContext } from "react";
 import SettingsComponent from "@/app/ui/account/settings/settings-component";
 
-export default function AccountSettings() {
+export default function DemoAccountSettings() {
     const { userData, updateUserData } =
         useContext<UserDataContextType>(UserDataContext);
     const { currencyData, updateCurrencyData } =
         useContext<CurrencyContextType>(CurrencyContext);
 
     return (
-        <SettingsComponent userData={userData} currencyData={currencyData} />
+        <SettingsComponent
+            userData={userData}
+            updateUserData={{ updateUserData: updateUserData }}
+            currencyData={currencyData}
+            updateCurrencyData={{ updateCurrencyData: updateCurrencyData }}
+        />
     );
 }

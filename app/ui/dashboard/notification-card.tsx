@@ -25,10 +25,12 @@ export default function Component() {
     ];
 
     return (
-        <article className="relative rounded-full border border-gray-500">
+        <article className="relative cursor-pointer rounded-full border border-gray-500">
             <Popover open={isOpen} onOpenChange={setIsOpen}>
                 <PopoverTrigger asChild>
-                    <Bell size={26} className="m-4" />
+                    <div className="rounded-full p-4">
+                        <Bell size={26} />
+                    </div>
                 </PopoverTrigger>
                 <PopoverContent className="w-80 p-0" align="end">
                     <div className="overflow-hidden rounded-lg bg-white shadow-lg">

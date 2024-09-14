@@ -15,6 +15,7 @@ import {
     AvatarImage,
     AvatarFallback,
 } from "../../shadcn-components/ui/avatar";
+import { Pencil } from "lucide-react";
 
 export default function AvatarSelector({
     defaultAvatar,
@@ -33,46 +34,54 @@ export default function AvatarSelector({
         "https://robohash.org/16",
     ];
 
-    const [open, setOpen] = useState(false); // set initial state using props
     const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
 
     return (
-        <Dialog
-            open={open}
-            onOpenChange={() => {
-                setOpen(!open);
-            }}
-        >
+        <Dialog>
             <DialogTrigger asChild>
-                <Button
-                    variant="outline"
-                    className="h-full w-full overflow-hidden rounded-full p-0 transition-transform duration-200 hover:scale-105"
-                >
-                    <Avatar className="h-full w-full">
-                        <AvatarImage
-                            src={selectedAvatar}
-                            alt="Profile picture"
-                        />
-                        <AvatarFallback>AVTR</AvatarFallback>
-                    </Avatar>
-                </Button>
+                <div>
+                    <Button
+                        variant="outline"
+                        className="h-full w-full overflow-hidden rounded-full p-0 transition-transform duration-200 hover:scale-105"
+                    >
+                        <Avatar className="h-full w-full">
+                            <AvatarImage
+                                src={selectedAvatar}
+                                alt="Profile picture"
+                            />
+                            <AvatarFallback>AVTR</AvatarFallback>
+                        </Avatar>
+                    </Button>
+                    {/* For mobiles */}
+                    <div>
+                        {/* Set open/close props here to open avatar selector dialog on click. See avatar component comment */}
+                        <p className="flex w-max -translate-x-[22px] items-center gap-1 text-center text-sm lg:hidden">
+                            <span>Change Avatar</span>
+                            <span>
+                                <Pencil size={16} />
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </DialogTrigger>
             <DialogContent
-                className="sm:max-w-[425px]"
+                className="max-w-max sm:px-8"
                 aria-describedby="#none"
             >
                 <DialogHeader>
-                    <DialogTitle>Choose your profile picture</DialogTitle>
+                    <DialogTitle className="sm:text-2xl">
+                        Choose your profile picture
+                    </DialogTitle>
                     <DialogDescription className="hidden">
                         Avatar Selector
                     </DialogDescription>
                 </DialogHeader>
-                <div className="grid grid-cols-3 gap-4 py-4">
+                <div className="mx-auto grid grid-cols-3 gap-5 py-4">
                     {avatars.map((avatar, index) => (
                         <Button
                             key={avatar}
                             variant="outline"
-                            className={`h-[100px] w-full overflow-hidden rounded-lg p-0 transition-all duration-200 hover:scale-105 ${
+                            className={`size-[80px] overflow-hidden rounded-lg p-0 transition-all duration-200 hover:scale-105 sm:size-[100px] ${
                                 selectedAvatar === avatar
                                     ? "ring-2 ring-primary"
                                     : ""
